@@ -3,22 +3,18 @@ var router = express.Router();
 
 var reviews = [
   {
-    id: 1,
     name: 'MacDo',
     placeType: 'Fastfood',
     stars: 3
   }, {
-    id: 2,
     name: 'KFC',
     placeType: 'Fastfood',
     stars: 3
   }, {
-    id: 3,
     name: 'L\'été en pente douce',
     placeType: 'restaurant',
     stars: 6
   }, {
-    id: 4,
     name: 'Café du Commerce',
     placeType: 'bar',
     stars: 8
@@ -37,10 +33,19 @@ router.post('/new', function(req, res, next){
   reviews.push(newReview);
   res.json({message: 'review added'});
 });
+router.put('/edit/:index', function(req, res){
+  reviews[req.params.index] = req.query;
+  res.json ({message: 'review updated'});
+});
+
 
 router.delete('/delete', function(req, res, next){
   reviews = [];
   res.json({message: 'all reviews deleted'});
+});
+router.delete('/delete/:index', function(req, res, next){
+  reviews.splice(req.params.index, 1);
+  res.json({message: 'review deleted'});
 });
 
 module.exports = router;
