@@ -1,5 +1,8 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var router = express.Router();
+var reviewSchema = require('../database/review');
+var Review = mongoose.model('Review', reviewSchema);
 
 var reviews = [
   {
@@ -22,7 +25,13 @@ var reviews = [
 ];
 
 router.get('/', function(req, res, next) {
-  res.send(reviews);
+  Review.find({}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      res.send(data);
+    }
+  });
 });
 router.get('/:index', function(req, res, next){
   res.send(reviews[req.params.index]);
