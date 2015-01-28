@@ -3,18 +3,22 @@ var router = express.Router();
 
 var reviews = [
   {
+    id: 1,
     name: 'MacDo',
     placeType: 'Fastfood',
     stars: 3
   }, {
+    id: 2,
     name: 'KFC',
     placeType: 'Fastfood',
     stars: 3
   }, {
+    id: 3,
     name: 'L\'été en pente douce',
     placeType: 'restaurant',
     stars: 6
   }, {
+    id: 4,
     name: 'Café du Commerce',
     placeType: 'bar',
     stars: 8
@@ -23,6 +27,9 @@ var reviews = [
 
 router.get('/', function(req, res, next) {
   res.send(reviews);
+});
+router.get('/:index', function(req, res, next){
+  res.send(reviews[req.params.index]);
 });
 
 router.post('/new', function(req, res, next){
