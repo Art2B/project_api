@@ -1,0 +1,21 @@
+extends layout
+
+block content
+	h1 Reviews
+	table
+		tr
+			th Name
+			th Type
+			th Stars
+		each val in reviews
+			tr
+				td= val.name
+				td= val.placeType
+				td
+					- var n = 1
+					while n <= val.stars
+						span *
+						- n++
+				td
+					a(href='/reviews/'+val._id) Voir
+				td#js-delete Supprimer
