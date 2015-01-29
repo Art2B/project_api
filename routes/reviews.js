@@ -63,8 +63,13 @@ router.put('/edit/:id', function(req, res){
 
 
 router.delete('/delete', function(req, res, next){
-  reviews = [];
-  res.json({message: 'all reviews deleted'});
+  Review.remove({}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      res.status(204).json({message: 'database deleted'});
+    }
+  });
 });
 router.delete('/delete/:index', function(req, res, next){
   reviews.splice(req.params.index, 1);
