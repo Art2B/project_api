@@ -46,14 +46,19 @@ router.get('/:id', function(req, res, next){
 router.post('/new', function(req, res, next){
   var newReview = new Review(req.query);
   newReview.save(function (err) {
-    if (err) return handleError(err);
+    if (err) return res.status(500).send({'error': err});
   });
-  res.json({message: 'review added'});
+  res.status(201).json({message: 'review added'});
 });
 
-router.put('/edit/:index', function(req, res){
-  reviews[req.params.index] = req.query;
-  res.json ({message: 'review updated'});
+router.put('/edit/:id', function(req, res){
+  Review.update({_id: req.params.id}, req.body, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      res.status(201).json ({message: 'review updated'});
+    }
+  });
 });
 
 
