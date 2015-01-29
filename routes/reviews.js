@@ -71,9 +71,14 @@ router.delete('/delete', function(req, res, next){
     }
   });
 });
-router.delete('/delete/:index', function(req, res, next){
-  reviews.splice(req.params.index, 1);
-  res.json({message: 'review deleted'});
+router.delete('/delete/:id', function(req, res, next){
+  Review.remove({_id: req.params.id}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      res.status(204).json({message: 'review deleted'});
+    }
+  });
 });
 
 module.exports = router;
