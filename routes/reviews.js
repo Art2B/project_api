@@ -29,19 +29,28 @@ router.get('/', function(req, res, next) {
     if(err){
       res.status(500).send({'error': err});
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 });
-router.get('/:index', function(req, res, next){
-  res.send(reviews[req.params.index]);
+router.get('/:id', function(req, res, next){
+  Review.find({'_id': req.params.id}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      res.status(200).send(data);
+    }
+  });
 });
 
 router.post('/new', function(req, res, next){
-  var newReview = req.query;
-  reviews.push(newReview);
+  var newReview = new Review(req.query);
+  newReview.save(function (err) {
+    if (err) return handleError(err);
+  });
   res.json({message: 'review added'});
 });
+
 router.put('/edit/:index', function(req, res){
   reviews[req.params.index] = req.query;
   res.json ({message: 'review updated'});
