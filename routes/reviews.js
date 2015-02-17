@@ -17,6 +17,19 @@ router.get('/', function(req, res, next) {
     }
   });
 });
+router.get('/topPlaces', function(req, res, next) {
+  Review.find().sort({stars: 'desc'}).limit(3).exec(function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      if(req.get('Accept').indexOf("html") >= 0){
+        res.render('reviews', {reviews: data});
+      } else {
+        res.status(200).json(data);
+      }
+    }
+  });
+});
 router.get('/new', function(req, res){
   if(req.get('Accept').indexOf("html") >= 0){
     res.render('newReview');
