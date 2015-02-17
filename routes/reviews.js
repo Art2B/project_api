@@ -17,14 +17,19 @@ router.get('/', function(req, res, next) {
     }
   });
 });
+router.get('/new', function(req, res){
+  if(req.get('Accept').indexOf("html") >= 0){
+    res.render('newReview');
+  }
+});
 router.get('/:id', function(req, res, next){
   Review.find({'_id': req.params.id}, function(err, data){
     if(err){
       res.status(500).send({'error': err});
     } else {
       if(req.get('Accept').indexOf("html") >= 0){
-        res.render('singleReview', {review: data[0]});
-      } else {
+    res.render('singleReview', {review: data[0]});
+  } else {
         res.status(200).json(data);
       }
     }
@@ -41,7 +46,6 @@ Review.find({'_id': req.params.id}, function(err, data){
     }
   });
 });
-
 router.post('/new', function(req, res, next){
   var newReview = new Review(req.query);
   newReview.save(function (err) {

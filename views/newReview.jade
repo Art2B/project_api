@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  p#message 
+  form(class='ui form' id='form')
+    h4.ui.dividing.header Edit review
+    div.field
+      label Name
+      input(type='text' id='name' name='name' placeholder='Name')
+    div.field
+      label Placetype
+      input(type='text' id='placetype' name='placetype' placeholder='Placetype')
+    div.field
+      label Stars
+      input(type='number' id='stars' name='stars' placeholder='stars')
+    div.ui.submit.button#js-create Create
+
+  a(href="/reviews") All reviews
