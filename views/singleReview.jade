@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	h1= review.name
+	ul
+		li= review.name
+		li= review.placeType
+		li
+			- var n = 1
+			while n <= review.stars
+				span *
+				- n++

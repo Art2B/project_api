@@ -4,32 +4,16 @@ var router = express.Router();
 var reviewSchema = require('../database/review');
 var Review = mongoose.model('Review', reviewSchema);
 
-var reviews = [
-  {
-    name: 'MacDo',
-    placeType: 'Fastfood',
-    stars: 3
-  }, {
-    name: 'KFC',
-    placeType: 'Fastfood',
-    stars: 3
-  }, {
-    name: 'L\'été en pente douce',
-    placeType: 'restaurant',
-    stars: 6
-  }, {
-    name: 'Café du Commerce',
-    placeType: 'bar',
-    stars: 8
-  }
-];
-
 router.get('/', function(req, res, next) {
   Review.find({}, function(err, data){
     if(err){
       res.status(500).send({'error': err});
     } else {
-      res.status(200).send(data);
+      if(req.get('Accept').indexOf("html") >= 0){
+        res.render('reviews', {reviews: data});
+      } else {
+        res.status(200).json(data);
+      }
     }
   });
 });
@@ -38,7 +22,11 @@ router.get('/:id', function(req, res, next){
     if(err){
       res.status(500).send({'error': err});
     } else {
-      res.status(200).send(data);
+      if(req.get('Accept').indexOf("html") >= 0){
+        res.render('singleReview', {review: data[0]});
+      } else {
+        res.status(200).json(data);
+      }
     }
   });
 });
