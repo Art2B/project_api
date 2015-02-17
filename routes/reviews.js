@@ -52,10 +52,11 @@ router.post('/new', function(req, res, next){
 });
 
 router.put('/edit/:id', function(req, res){
-  Review.update({_id: req.params.id}, req.body, function(err, data){
+  Review.update({_id: req.params.id}, req.query, function(err, data){
     if(err){
       res.status(500).send({'error': err});
     } else {
+      console.log(data);
       res.status(201).json ({message: 'review updated'});
     }
   });
