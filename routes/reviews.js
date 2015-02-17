@@ -30,6 +30,17 @@ router.get('/:id', function(req, res, next){
     }
   });
 });
+router.get('/edit/:id', function(req, res){
+Review.find({'_id': req.params.id}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      if(req.get('Accept').indexOf("html") >= 0) {
+        res.render('editReview', {review: data[0]});
+      }
+    }
+  });
+});
 
 router.post('/new', function(req, res, next){
   var newReview = new Review(req.query);
@@ -44,7 +55,6 @@ router.put('/edit/:id', function(req, res){
     if(err){
       res.status(500).send({'error': err});
     } else {
-      console.log(data);
       res.status(201).json ({message: 'review updated'});
     }
   });
