@@ -44,16 +44,20 @@ $('#js-search').click(function(event) {
     request.send();
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
-        var response = JSON.parse(request.responseText);
-        var responseHTML = '';
-        $.each(response, function(index, val) {
-          responseHTML += '<div><strong>'+val.name+'</strong></br><p>'+val.placeType+'</p>';
-          for(var i=1; i<=val.stars; i++){
-            responseHTML += '<i class="icon star"></i>';
-          }
-          responseHTML += '</div></br></br>';
-        });
-        $('#response').html(responseHTML);
+        try {
+          var response = JSON.parse(request.responseText);
+          var responseHTML = '';
+          $.each(response, function(index, val) {
+            responseHTML += '<div><strong>'+val.name+'</strong></br><p>'+val.placeType+'</p>';
+            for(var i=1; i<=val.stars; i++){
+              responseHTML += '<i class="icon star"></i>';
+            }
+            responseHTML += '</div></br></br>';
+          });
+          $('#response').html(responseHTML);
+        } catch(err) {
+          console.log(err);
+        }
       }
     }
   }
