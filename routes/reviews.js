@@ -4,6 +4,7 @@ var router = express.Router();
 var reviewSchema = require('../database/review');
 var Review = mongoose.model('Review', reviewSchema);
 
+// GET Routes
 router.get('/', function(req, res, next) {
   Review.find({}, function(err, data){
     if(err){
@@ -35,6 +36,42 @@ router.get('/new', function(req, res){
     res.render('newReview');
   }
 });
+router.get('/edit/:id', function(req, res){
+  Review.find({'_id': req.params.id}, function(err, data){
+    if(err){
+      res.status(500).send({'error': err});
+    } else {
+      if(req.get('Accept').indexOf("html") >= 0) {
+        res.render('editReview', {review: data[0]});
+      }
+    }
+  });
+});
+router.get('/search', function(req, res){
+  var params = {};
+  if(req.query.name){
+    params.name = req.query.name;
+  }
+  if(req.query.placeType){
+    params.placeType = req.query.placeType;
+  }
+  if(req.query.stars){
+    params.stars = req.query.stars;
+  }
+
+  if(req.get('Accept').indexOf("html") >= 0){
+    res.render('searchReview')
+  } else {
+    Review.find(params, function(err, data){
+      if(err){
+        console.log(err);
+      } else {
+        res.status(200).json(data);
+      }
+    });
+  }
+
+});
 router.get('/:id', function(req, res, next){
   Review.find({'_id': req.params.id}, function(err, data){
     if(err){
@@ -48,17 +85,8 @@ router.get('/:id', function(req, res, next){
     }
   });
 });
-router.get('/edit/:id', function(req, res){
-Review.find({'_id': req.params.id}, function(err, data){
-    if(err){
-      res.status(500).send({'error': err});
-    } else {
-      if(req.get('Accept').indexOf("html") >= 0) {
-        res.render('editReview', {review: data[0]});
-      }
-    }
-  });
-});
+
+// POST Routes
 router.post('/new', function(req, res, next){
   var newReview = new Review(req.query);
   newReview.save(function (err) {
@@ -67,6 +95,7 @@ router.post('/new', function(req, res, next){
   res.status(201).json({message: 'review added'});
 });
 
+// PUT Routes
 router.put('/edit/:id', function(req, res){
   Review.update({_id: req.params.id}, req.query, function(err, data){
     if(err){
@@ -77,7 +106,7 @@ router.put('/edit/:id', function(req, res){
   });
 });
 
-
+// DELETE Routes
 router.delete('/delete', function(req, res, next){
   Review.remove({}, function(err, data){
     if(err){

@@ -32,5 +32,29 @@ $('#js-create').click(function(event) {
   } else {
     $('#message').text('Error, please fill the input')
   }
+});
 
+$('#js-search').click(function(event) {
+  var paramToSearch = $('select').val();
+  var query = $('#query').val();
+  if(query !== ''){
+    var weburl = '/reviews/search?'+paramToSearch+'='+query;
+    var request = new XMLHttpRequest();
+    request.open('GET', weburl, true);
+    request.send();
+    request.onreadystatechange = function() {
+      if (request.readyState == 4) {
+        var response = JSON.parse(request.responseText);
+        var responseHTML = '';
+        $.each(response, function(index, val) {
+          responseHTML += '<div><strong>'+val.name+'</strong></br><p>'+val.placeType+'</p>';
+          for(var i=1; i<=val.stars; i++){
+            responseHTML += '<i class="icon star"></i>';
+          }
+          responseHTML += '</div></br></br>';
+        });
+        $('#response').html(responseHTML);
+      }
+    }
+  }
 });
