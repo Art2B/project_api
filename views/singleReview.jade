@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	h1= review.name
+	h2= review.placeType
+	p
+		- var n = 1
+		while n <= review.stars
+			i.star.icon
+			- n++
+	a(href="/reviews/edit/"+review._id)
+		i.icon.edit 
+		span Edit
+	a(href="/reviews") All reviews

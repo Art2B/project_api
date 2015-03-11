@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	h1 Reviews
+	table.ui.table
+		thead
+			tr
+				th Name
+				th Type
+				th Stars
+				th Actions
+				th  
+		tbody
+			each val in reviews
+				tr
+					td= val.name
+					td= val.placeType
+					td
+						- var n = 1
+						while n <= val.stars
+							i.star.icon
+							- n++
+					td
+						a(href='/reviews/'+val._id) Voir
+					td(id='js-delete' data-id=val._id) Supprimer
+
+	a(href='review/new') Add a review
+	a(href="/reviews/new") New review

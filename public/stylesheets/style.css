@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+#js-delete {
+  color: #e74c3c;
+  cursor: pointer;
+}
+#js-delete:hover {
+  color: #c0392b;
+}
